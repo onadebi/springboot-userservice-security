@@ -1,10 +1,11 @@
 package dev.onaxsys.onaxsecurity.user;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+
+import dev.onaxsys.onaxsecurity.user.dto.AuthenticationResponse;
+import dev.onaxsys.onaxsecurity.user.dto.RegisterRequest;
 
 @Service
 public class UserService implements IUserService {
@@ -16,8 +17,21 @@ public class UserService implements IUserService {
         this._userRepository = userRepository;
     }
 
-    public UserProfile createUser(UserProfile userProfile) {
-        return _userRepository.save(userProfile);
+    public AuthenticationResponse createUser(RegisterRequest userProfile) {
+        if(userProfile == null)
+            return null;
+        
+        UserProfile obj = _userRepository.save(new UserProfile(){{
+            setEmail(userProfile.getEmail());
+            setPassword(userProfile.getPassword());
+            setFirstName(userProfile.getFirstName());
+            setLastName(userProfile.getLastName());
+        }});
+        if(obj == null)
+            return null;
+            AuthenticationResponse resp = new AuthenticationResponse();
+            resp.setToken(obj.getEmail());
+            return resp;
     }
 
     public UserProfile getUserProfile(String username) {
