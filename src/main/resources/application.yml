@@ -4,6 +4,10 @@ spring:
     username: onadebi
     password: onadebi
     driver-class-name: org.postgresql.Driver
+  security:
+    user:
+      name: user
+      password: pwd
 
   jpa:
     hibernate:
@@ -13,3 +17,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+
+jwt:
+  jwtSecret: supersignaturekey
